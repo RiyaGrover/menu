@@ -1,0 +1,71 @@
+package Menu
+
+import (
+         "fyne.io/fyne/v2"
+	    "fyne.io/fyne/v2/app"
+)
+type screen struct {
+
+}
+func (s *screen) MinSize(items []fyne.CanvasObject) fyne.Size{
+	total := fyne.NewSize(0,0)
+	for _,obj := range items{
+		if !obj.Visible(){
+			continue
+		}
+		total = total.Add(obj.MinSize())
+	}
+	return total
+}
+func (s *screen) Layout(items []fyne.CanvasObject,size fyne.Size){
+
+	count := -1
+	for _,obj := range items{
+		if !obj.Visible(){
+			continue
+		}
+		count++
+	}
+	if count==1{
+		count=0
+	}
+	myPos := fyne.NewPos((size.Width/2)-float32(count*23),size.Height-42.5)
+			for _,obj := range items{
+				if !obj.Visible(){
+					continue
+				}
+				obj.Move(myPos)
+				myPos.X = myPos.X+43
+				
+				obj.Resize(fyne.NewSize(38,38))
+			}
+}
+
+type layout struct {
+
+}
+
+func ( l *layout) MinSize(items []fyne.CanvasObject) fyne.Size{
+	return items[0].MinSize()
+}
+func (l *layout) Layout(items []fyne.CanvasObject,size fyne.Size){
+	items[0].Move(fyne.NewPos(0,size.Height-47))
+	items[0].Resize(fyne.NewSize(size.Width,47))
+}
+func layout_UI fyne.CanvasObject{
+
+	cal := []string{"C:\\Users\\hp\\Desktop\\Virtual os\\logos\\calc.png"}
+	diary := []string{"C:\\Users\\hp\\Desktop\\Virtual os\\logos\\diary.jpg"}
+	gallery := []string{"C:\\Users\\hp\\Desktop\\Virtual os\\logos\\diary.jpg"}
+	movie := []string{"C:\\Users\\hp\\Desktop\\Virtual os\\logos\\diary.jpg"}
+    text := []string{"C:\Users\\hp\\Desktop\\Virtual os\\logos\\diary.jpg"}
+	weather := []string{"C:\\Users\\hp\\Desktop\\Virtual os\\logos\\diary.jpg"}
+
+newContainer := container.New(&layout{},item,
+        container.New(
+			&screen{},NewStateCheck(cal),NewStateCheck(diary),NewStateCheck(gallery), NewStateCheck(movie),
+			NewStateCheck(text), NewStateCheck(weather)
+		))
+	return newContainer
+  }
+}
